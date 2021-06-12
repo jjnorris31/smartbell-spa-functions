@@ -1,0 +1,33 @@
+POST http://127.0.0.1:5001/smartbell-pwa/us-central1/app/ranch
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImFiMGNiMTk5Zjg3MGYyOGUyOTg5YWI0ODFjYzJlNDdlMGUyY2MxOWQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc21hcnRiZWxsLXB3YSIsImF1ZCI6InNtYXJ0YmVsbC1wd2EiLCJhdXRoX3RpbWUiOjE2MjI4NDU4MTksInVzZXJfaWQiOiJGUzV5UG95SWhqVm5ZYmhPNHpSNEJRaGl5Q28xIiwic3ViIjoiRlM1eVBveUloalZuWWJoTzR6UjRCUWhpeUNvMSIsImlhdCI6MTYyMjg0NTgxOSwiZXhwIjoxNjIyODQ5NDE5LCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBleGFtcGxlLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.TyMg_yeniI3Bjd05EgNfMWTfoeih67SWRTc8GPlKJnS7E9JpXI0TP1IlXIifwkeC_YynfWrXqOXpyWybcJO3ksZudAjVbSPNA0VKxtdkfbxvpIMqgmVyZsfgdZSAndn5swlQrCPGWD7Wym4-r3i2bTJhz0GoHsT73n1GTr9WnbYqhusldpfotcQ8AlHnf0yiHWtul4NR6RFeWDWiRxBsJsPMxVEkRJYuoS2W99LzT6DnyvwxLRrnCS9bdJ3FNJV8MgcqU0frhIe68ExwnefipttUo-sRVwcqN3qR6jdcYxCVlcd1DU4f_OnrKNd7UYN5QQ_gP_I50Hz0x0fDJDiyZg
+
+{
+  "name": "",
+  "position": {
+    "latitude": 103,
+    "longitude": 103
+  },
+  "address": "Dirección increíble",
+  "userIdentifier": "Identificador"
+}
+
+###
+
+GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/ranch/8Omrsxp1xsoVRLTbwaaj
+
+###
+
+PUT http://127.0.0.1:5001/smartbell-pwa/us-central1/app/ranch/8Omrsxp1xsoVRLTbwaaj
+Content-Type: application/json
+
+{
+  "name": "El Verguel",
+  "position": {
+    "latitude": 103,
+    "longitude": 103
+  },
+  "address": "Dirección increíble"
+}
+
+

@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": false,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+  },
+  "compileOnSave": true,
+  "include": [
+    "src",
+    "models",
+    "routes"
+  ],
+  "exclude": ["node_modules/*"]
+}

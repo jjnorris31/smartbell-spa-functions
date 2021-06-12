@@ -1,0 +1,15 @@
+### Send request with dynamic variables in request's body
+POST http://127.0.0.1:5001/smartbell-pwa/us-central1/app/user/claims
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImFiMGNiMTk5Zjg3MGYyOGUyOTg5YWI0ODFjYzJlNDdlMGUyY2MxOWQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc21hcnRiZWxsLXB3YSIsImF1ZCI6InNtYXJ0YmVsbC1wd2EiLCJhdXRoX3RpbWUiOjE2MjI4NDcyNDUsInVzZXJfaWQiOiJGQWpjNzZPUTJjWUJJdkd0cXc1Rm1oTkViVm8yIiwic3ViIjoiRkFqYzc2T1EyY1lCSXZHdHF3NUZtaE5FYlZvMiIsImlhdCI6MTYyMjg0NzI0NSwiZXhwIjoxNjIyODUwODQ1LCJlbWFpbCI6Impqbm9ycmlzMzFAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImpqbm9ycmlzMzFAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.aRt1Xg95Qhircs0pRlP0v6QuUoaI-NsD2rlKiv7HjQye1ZPI1nRv-iPLu6qjnbGlVNiN30nfch2b1h86EZM0oJhVIXuTFaZQXHSVDF3Gbm2rsbzhl4Sf5RCN7C0h3LrVyKo_Hi2tL466YCuy810vNrjChrjcAuS1ncenw3c953HFqhgLtBNn1VQlA8h8YiGO7uZDhBHMjnk3p7uKKqDmR927M8JuMyv-5wLFn0ukIIfvF22u-5sRbmJExjgWnBKhGsYI8NG8doekOsvQMG1FrPMuKDH7zwsf5daKkWmJywJcjXL5jjtvb6nK1heftDpKkMAtNjy0qNvgxbSKy75awQ
+
+{
+"firstName": "JuanJo",
+"firstSurname": "Basilio",
+"email": "jjnorris31@gmail.com",
+"phone": "523312501832",
+"roles": ["owner", "admin", "veterinary", "nutritionist", "technician"],
+  "authUniqueIdentifier": "56465"
+}
+
+###
