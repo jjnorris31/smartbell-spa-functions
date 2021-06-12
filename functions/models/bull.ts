@@ -1,4 +1,5 @@
 import {isDefined, IsNotEmpty, Validate} from "class-validator";
+import {firestore} from "firebase-admin/lib/firestore";
 
 class Bull {
     id: string;
@@ -7,7 +8,7 @@ class Bull {
       message: "birthday is required",
     })
     @IsNotEmpty()
-    birthday: string;
+    birthday: firestore.Timestamp;
 
     @Validate(isDefined, {
       message: "breed is required",
@@ -21,7 +22,7 @@ class Bull {
     @IsNotEmpty()
     groupIdentifier: string;
 
-    deleteAt: Date;
+    deleteAt: firestore.Timestamp;
     internalIdentifier: string;
     siniigaIdentifier: string;
     name: string;

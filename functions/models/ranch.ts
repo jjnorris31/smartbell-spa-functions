@@ -1,10 +1,11 @@
-import {Collection, Type} from "fireorm";
+import {Collection, ISubCollection, SubCollection, Type} from "fireorm";
 import {
   isDefined,
   Validate,
   IsNotEmpty,
   IsDate,
 } from "class-validator";
+import Bull from "../models/bull";
 
 // eslint-disable-next-line new-cap,require-jsdoc
 @Collection()
@@ -38,6 +39,9 @@ class Ranch {
       message: "createDate is required",
     })
     createDate: Date;
+
+    @SubCollection(Bull)
+    bulls?: ISubCollection<Bull>
 }
 
 export class Geopoint {

@@ -9,7 +9,8 @@ import * as fireorm from "fireorm";
 import * as morgan from "morgan";
 import * as cors from "cors";
 import userRoutes from "../routes/user.routes";
-import ranchRouters from "../routes/ranch.routes";
+import ranchRoutes from "../routes/ranch.routes";
+import bullRoutes from "../routes/bull.routes";
 
 const app = express();
 app.use(express.json());
@@ -28,7 +29,8 @@ fireorm.initialize(db, {
 
 
 app.use("/user", userRoutes);
-app.use("/ranch", ranchRouters);
+app.use("/ranch", ranchRoutes);
+app.use("/bull", bullRoutes);
 
 app.get("/hello", (req, res) => {
   return res.status(200).json({message: "Hello world"});
