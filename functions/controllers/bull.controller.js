@@ -35,6 +35,7 @@ export const createBull = async (req, res) => {
         .fromMillis(moment(birthday).valueOf());
     newBull.siniigaIdentifier = siniigaIdentifier;
     newBull.groupIdentifier = groupIdentifier;
+
     await ranchRef.bulls.create(newBull);
     return res.status(201).json({
       message: "A bull was created",
