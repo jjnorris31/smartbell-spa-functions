@@ -1,0 +1,5 @@
+###
+GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/femaleBovine?ranch=SvGk8ewbKYCK7lfywhMl&bovine=jzOa875KRxMtksex3ePh
+Accept: application/json
+
+###

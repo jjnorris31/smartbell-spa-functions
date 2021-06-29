@@ -11,6 +11,8 @@ import * as cors from "cors";
 import userRoutes from "../routes/user.routes";
 import ranchRoutes from "../routes/ranch.routes";
 import bullRoutes from "../routes/bull.routes";
+import cowRoutes from "../routes/femaleBovine.routes";
+import eventRoutes from "../routes/event.routes";
 
 const app = express();
 app.use(express.json());
@@ -31,6 +33,8 @@ fireorm.initialize(db, {
 app.use("/user", userRoutes);
 app.use("/ranch", ranchRoutes);
 app.use("/bull", bullRoutes);
+app.use("/femaleBovine", cowRoutes);
+app.use("/event", eventRoutes);
 
 app.get("/hello", (req, res) => {
   return res.status(200).json({message: "Hello world"});

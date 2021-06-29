@@ -1,0 +1,46 @@
+POST http://127.0.0.1:5001/smartbell-pwa/us-central1/app/event/heat
+Content-Type: application/json
+
+{
+  "internalIdentifier": "ntvYeGcNBxgfX0ai8uFx",
+  "ranchIdentifier": "SvGk8ewbKYCK7lfywhMl",
+  "date": "2012-01-01",
+  "description": "A new event",
+  "type": "INSEMINATED_HEAT",
+  "bullIdentifier": "U3rcbQSIZaQZZhgvd2Az",
+  "lactationCycle": "2"
+}
+
+###
+
+POST http://127.0.0.1:5001/smartbell-pwa/us-central1/app/event/calving
+Content-Type: application/json
+
+{
+"internalIdentifier": "ntvYeGcNBxgfX0ai8uFx",
+"ranchIdentifier": "SvGk8ewbKYCK7lfywhMl",
+"date": "2012-01-01",
+"description": "A new event",
+"type": "INSEMINATED_HEAT",
+"abortReason": "NOT_FOUND",
+"abortType": "NOT_FOUND",
+"lactationCycle": "2"
+}
+
+###
+
+POST http://127.0.0.1:5001/smartbell-pwa/us-central1/app/event/pregnant
+Content-Type: application/json
+
+{
+  "internalIdentifier": "ntvYeGcNBxgfX0ai8uFx",
+  "ranchIdentifier": "SvGk8ewbKYCK7lfywhMl",
+  "date": "2012-01-01",
+  "description": "A new event",
+  "type": "INSEMINATED_HEAT",
+  "heatIdentifier": "uUcZMoGbT3s7jve6NnP1",
+  "lactationCycle": "2"
+}
+###
+GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/event/calving?ranch=SvGk8ewbKYCK7lfywhMl&bovine=DimfxggsdKYbmmfClhlx&cycle=1
+Content-Type: application/json

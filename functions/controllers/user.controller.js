@@ -1,5 +1,6 @@
 import User from "../models/user";
 import {getRepository} from "fireorm";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const admin = require("firebase-admin");
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -65,10 +66,11 @@ export const verifyToken = async (req, res, next) => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const setClaims = async (req, res) => {
   const uid = res.locals.uid;
   if (uid) {
-    await admin.auth().setCustomUserClaims(uid, {role: 'admin'});
+    await admin.auth().setCustomUserClaims(uid, {role: "admin"});
     return res.status(200).send();
   } else {
     return res.status(401).json({message: "Not token provided"});

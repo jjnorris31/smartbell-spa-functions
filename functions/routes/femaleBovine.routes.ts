@@ -1,10 +1,11 @@
 import {Router} from "express";
 // eslint-disable-next-line new-cap
 const router = Router();
-import * as bullController from "../controllers/bull.controller";
+import * as femaleBovineController
+  from "../controllers/femaleBovine.controller";
 
-router.post("/", bullController.createBull);
-// router.get("/", userController.verifyToken, ranchController.getRanches);
+router.post("/", femaleBovineController.createFemaleBovine);
+router.get("/", femaleBovineController.getAnimal);
 // router.get("/:id", userController.verifyToken, ranchController.getRanch);
 // router.put("/:id", userController.verifyToken, ranchController.updateRanch);
 // router.delete("/:id", userController.verifyToken,

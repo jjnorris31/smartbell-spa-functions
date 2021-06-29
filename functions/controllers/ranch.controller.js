@@ -2,12 +2,15 @@ import Ranch from "../models/ranch";
 import {getRepository} from "fireorm";
 import {getConstrainsError, getDefaultError} from "../utils/utils";
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const createRanch = async (req, res) => {
   const ranchRepository = getRepository(Ranch);
   const role = res.locals.role;
 
   if (!["admin"].includes(role)) {
-    return res.status(401).json({message: "Unauthorized to create a ranch", code: "role/unauthorized"});
+    return res.status(401)
+        .json({message: "Unauthorized to create a ranch",
+          code: "role/unauthorized"});
   }
 
   try {
@@ -35,6 +38,7 @@ export const createRanch = async (req, res) => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getRanches = async (req, res) => {
   const ranchRepository = getRepository(Ranch);
   const limit = req.query.limit;
@@ -51,17 +55,20 @@ export const getRanches = async (req, res) => {
     response.count = ranches.length;
     return res.status(200).json(response);
   } catch (e) {
-    return res.status(400).send({message: 'Unexpected error'});
+    return res.status(400).send({message: "Unexpected error"});
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getRanch = async (req, res) => {
   const ranchRepository = getRepository(Ranch);
   const ranchId = req.params.id;
   const role = res.locals.role;
 
   if (!["admin"].includes(role)) {
-    return res.status(401).json({message: "Unauthorized to get a ranch", code: "role/unauthorized"});
+    return res.status(401)
+        .json({message: "Unauthorized to get a ranch",
+          code: "role/unauthorized"});
   }
 
   try {
@@ -72,13 +79,16 @@ export const getRanch = async (req, res) => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const deleteRanch = async (req, res) => {
   const ranchRepository = getRepository(Ranch);
   const ranchId = req.params.id;
   const role = res.locals.role;
 
   if (!["admin"].includes(role)) {
-    return res.status(401).json({message: "Unauthorized to delete a ranch", code: "role/unauthorized"});
+    return res.status(401)
+        .json({message: "Unauthorized to delete a ranch",
+          code: "role/unauthorized"});
   }
 
   try {
@@ -89,6 +99,7 @@ export const deleteRanch = async (req, res) => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const updateRanch = async (req, res) => {
   const ranchRepository = getRepository(Ranch);
   const ranchId = req.params.id;
@@ -108,7 +119,7 @@ export const updateRanch = async (req, res) => {
       address,
     } = req.body;
 
-    let ranch = await ranchRepository.findById(ranchId);
+    const ranch = await ranchRepository.findById(ranchId);
     ranch.name = name;
     ranch.position = position;
     ranch.address = address;

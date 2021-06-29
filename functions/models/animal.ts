@@ -32,6 +32,7 @@ class Animal {
     siniigaIdentifier: string;
     lastPregnantDate: string;
     lastCalving: Calving;
+    isHeifer: false;
 
     @Validate(isDefined, {
       message: "lactationCycle is required",
