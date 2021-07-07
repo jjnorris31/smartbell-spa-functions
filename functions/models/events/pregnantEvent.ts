@@ -27,6 +27,12 @@ class PregnantEvent {
   @IsNotEmpty()
   type: string;
 
+  @Validate(isDefined, {
+    message: "bovineIdentifier is required",
+  })
+  @IsNotEmpty()
+  bovineIdentifier: string;
+
   heatIdentifier: string;
 }
 

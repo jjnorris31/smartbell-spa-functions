@@ -26,6 +26,12 @@ class FemaleBovine {
   groupIdentifier: string;
 
   @Validate(isDefined, {
+    message: "siniigaIdentifier is required",
+  })
+  @IsNotEmpty()
+  siniigaIdentifier: string;
+
+  @Validate(isDefined, {
     message: "lactationCycle is required",
   })
   @IsNotEmpty()
@@ -53,7 +59,6 @@ class FemaleBovine {
   height: string;
   weight: string;
   internalIdentifier: string;
-  siniigaIdentifier: string;
   ranchIdentifier: string;
 }
 

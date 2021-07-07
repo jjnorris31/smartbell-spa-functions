@@ -27,6 +27,12 @@ class HeatEvent {
   @IsNotEmpty()
   type: string;
 
+  @Validate(isDefined, {
+    message: "type is required",
+  })
+  @IsNotEmpty()
+  bovineIdentifier: string;
+
   bullIdentifier: string;
 }
 

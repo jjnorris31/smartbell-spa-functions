@@ -50,3 +50,19 @@ export const createBull = async (req, res) => {
     return res.status(400).json(responseError);
   }
 };
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const getAllBulls = async (req, res) => {
+  const ranchRepository = getRepository(Ranch);
+  try {
+    const ranchIdentifier = req.query.ranch;
+
+    const ranchRef = await ranchRepository.findById(ranchIdentifier);
+    const bulls = await ranchRef.bulls.find();
+    return res.status(200).json(bulls);
+  } catch (error) {
+    const constraintError = getConstrainsError(error[0]?.constraints);
+    const responseError = constraintError ? constraintError : getDefaultError();
+    return res.status(400).json(responseError);
+  }
+};

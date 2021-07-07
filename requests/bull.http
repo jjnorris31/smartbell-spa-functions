@@ -11,3 +11,11 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImFiMGNiMTk5Zjg3MGYyOGUyOTg5YW
   "groupIdentifier": "DEFAULT",
   "ranchIdentifier": "9pVod6Mgcmmv6hV9iJtM"
 }
+###
+
+GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/bull/all
+Content-Type: application/json
+
+{
+  "ranchIdentifier": "SvGk8ewbKYCK7lfywhMl"
+}

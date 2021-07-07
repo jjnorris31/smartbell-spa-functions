@@ -28,7 +28,7 @@ class CalvingEvent {
   type: string;
 
   abortReason: string;
-  abortType: string;
+  sickness: string;
 }
 
 
