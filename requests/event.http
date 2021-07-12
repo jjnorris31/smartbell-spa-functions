@@ -50,7 +50,25 @@ GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/event/heat/lactationCycl
 Content-Type: application/json
 
 ###
+
 ###
 GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/event/pregnant/lactationCycle?ranch=SvGk8ewbKYCK7lfywhMl&bovine=DimfxggsdKYbmmfClhlx&cycle=1
 Content-Type: application/json
+###
+
+###
+GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/event/heat/all?ranch=SvGk8ewbKYCK7lfywhMl&bovine=48A8so9iXvA3l4H9r0Mn
+Content-Type: application/json
+###
+
+###
+GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/event/pregnant/all?ranch=SvGk8ewbKYCK7lfywhMl&bovine=48A8so9iXvA3l4H9r0Mn
+Content-Type: application/json
+###
+
+###
+GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/event/calving/all?ranch=SvGk8ewbKYCK7lfywhMl&bovine=48A8so9iXvA3l4H9r0Mn
+Content-Type: application/json
+###
+
 

@@ -12,8 +12,9 @@ router.get("/heat/lactationCycle",
     eventController.getHeatEventsByLactationCycle);
 router.get("/pregnant/lactationCycle",
     eventController.getPregnantEventsByLactationCycle);
-// router.put("/:id", userController.verifyToken, ranchController.updateRanch);
-// router.delete("/:id", userController.verifyToken,
-// ranchController.deleteRanch);
+
+router.get("/heat/all", eventController.checkAnimalExist, eventController.getHeatEvents);
+router.get("/pregnant/all", eventController.checkAnimalExist, eventController.getPregnantEvents);
+router.get("/calving/all", eventController.checkAnimalExist, eventController.getCalvingEvents);
 
 export default router;

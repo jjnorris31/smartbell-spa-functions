@@ -204,6 +204,57 @@ export const getHeatEventsByLactationCycle = async (req, res) => {
   }
 };
 
+export const getHeatEvents = async (req, res) => {
+  const femaleBovineRepository = getRepository(FemaleBovine);
+  const bovineIdentifier = req.query.bovine;
+
+  try {
+    const femaleBovineRef = await femaleBovineRepository
+      .findById(bovineIdentifier);
+    const heatEvents = await femaleBovineRef.heatEvents
+      .whereNotEqualTo("lactationCycle", femaleBovineRef.lactationCycle).find();
+    return res.status(200).json(heatEvents);
+  } catch (error) {
+    const constraintError = getConstrainsError(error[0]?.constraints);
+    const responseError = constraintError ? constraintError : getDefaultError(error);
+    return res.status(400).json(responseError);
+  }
+};
+
+export const getPregnantEvents = async (req, res) => {
+  const femaleBovineRepository = getRepository(FemaleBovine);
+  const bovineIdentifier = req.query.bovine;
+
+  try {
+    const femaleBovineRef = await femaleBovineRepository
+      .findById(bovineIdentifier);
+    const pregnantEvents = await femaleBovineRef.pregnantEvents
+      .whereNotEqualTo("lactationCycle", femaleBovineRef.lactationCycle).find();
+    return res.status(200).json(pregnantEvents);
+  } catch (error) {
+    const constraintError = getConstrainsError(error[0]?.constraints);
+    const responseError = constraintError ? constraintError : getDefaultError(error);
+    return res.status(400).json(responseError);
+  }
+};
+
+export const getCalvingEvents = async (req, res) => {
+  const femaleBovineRepository = getRepository(FemaleBovine);
+  const bovineIdentifier = req.query.bovine;
+
+  try {
+    const femaleBovineRef = await femaleBovineRepository
+      .findById(bovineIdentifier);
+    const calvingEvents = await femaleBovineRef.pregnantEvents
+      .whereNotEqualTo("lactationCycle", femaleBovineRef.lactationCycle).find();
+    return res.status(200).json(calvingEvents);
+  } catch (error) {
+    const constraintError = getConstrainsError(error[0]?.constraints);
+    const responseError = constraintError ? constraintError : getDefaultError(error);
+    return res.status(400).json(responseError);
+  }
+};
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getPregnantEventsByLactationCycle = async (req, res) => {
   const femaleBovineRepository = getRepository(FemaleBovine);
@@ -246,10 +297,16 @@ export const getPregnantEventsByLactationCycle = async (req, res) => {
 export const checkAnimalExist = async (req, res, next) => {
   const femaleBovineRepository = getRepository(FemaleBovine);
   try {
-    const {
-      bovineIdentifier,
-      ranchIdentifier,
-    } = req.body;
+    let bovineIdentifier;
+    let ranchIdentifier;
+
+    if (req.body.bovineIdentifier && req.body.ranchIdentifier) {
+      bovineIdentifier = req.body.bovineIdentifier;
+      ranchIdentifier = req.body.ranchIdentifier;
+    } else {
+      bovineIdentifier = req.query.bovine;
+      ranchIdentifier = req.query.ranch;
+    }
 
     const femaleBovineRef = await femaleBovineRepository
         .whereEqualTo("ranchIdentifier", ranchIdentifier)
