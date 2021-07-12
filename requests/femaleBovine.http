@@ -3,3 +3,12 @@ GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/femaleBovine?ranch=SvGk8
 Accept: application/json
 
 ###
+
+PUT http://127.0.0.1:5001/smartbell-pwa/us-central1/app/femaleBovine/lactationCycle
+Content-Type: application/json
+
+{
+  "ranchIdentifier": "9pVod6Mgcmmv6hV9iJtM",
+  "bovineIdentifier": "29yWekMbektd2x5R982y"
+}
+###

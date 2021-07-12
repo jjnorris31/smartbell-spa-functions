@@ -7,7 +7,7 @@ import * as moment from "moment";
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const createFemaleBovine = async (req, res) => {
-  const ranchRepository = getRepository(Ranch);
+  const femaleBovineRepository = getRepository(FemaleBovine);
 
   try {
     const {
@@ -22,15 +22,26 @@ export const createFemaleBovine = async (req, res) => {
       isHeifer,
     } = req.body;
 
-    const ranchRef = await ranchRepository.findById(ranchIdentifier);
-    const femaleBovine = await ranchRef.femaleBovines
+    const foundInternalIdentifier = await femaleBovineRepository
+        .whereEqualTo("ranchIdentifier", ranchIdentifier)
         .whereEqualTo("internalIdentifier", internalIdentifier).findOne();
 
-    if (femaleBovine) {
+    const foundSiniigaIdentifier = await femaleBovineRepository
+        .whereEqualTo("siniigaIdentifier", siniigaIdentifier).findOne();
+
+    if (foundInternalIdentifier) {
       return res.status(409).json({
-        code: "duplicated",
+        code: "internal duplicated",
         // eslint-disable-next-line max-len
         message: `a ${isHeifer ? "heifer" : "cow"} with this internal identifier was saved previously`,
+      });
+    }
+
+    if (foundSiniigaIdentifier) {
+      return res.status(409).json({
+        code: "siniiga duplicated",
+        // eslint-disable-next-line max-len
+        message: `a ${isHeifer ? "heifer" : "cow"} with this siniiga identifier was saved previously`,
       });
     }
 
@@ -51,7 +62,7 @@ export const createFemaleBovine = async (req, res) => {
     newFemaleBovine.internalIdentifier = internalIdentifier;
     newFemaleBovine.siniigaIdentifier = siniigaIdentifier;
 
-    const response = await ranchRef.femaleBovines.create(newFemaleBovine);
+    const response = await femaleBovineRepository.create(newFemaleBovine);
     return res.status(201).json({
       message: `a ${isHeifer ? "heifer" : "cow"} was created`,
       internalIdentifier: response.id,
@@ -65,13 +76,13 @@ export const createFemaleBovine = async (req, res) => {
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getAnimal = async (req, res) => {
-  const ranchRepository = getRepository(Ranch);
+  const femaleBovineRepository = getRepository(FemaleBovine);
   const ranchIdentifier = req.query.ranch;
   const bovineIdentifier = req.query.bovine;
 
   try {
-    const ranchRef = await ranchRepository.findById(ranchIdentifier);
-    const femaleBovine = await ranchRef.femaleBovines
+    const femaleBovine = await femaleBovineRepository
+        .whereEqualTo("ranchIdentifier", ranchIdentifier)
         .whereEqualTo("id", bovineIdentifier).findOne();
 
     if (femaleBovine) {
@@ -89,6 +100,39 @@ export const getAnimal = async (req, res) => {
     return res.status(400).json(responseError);
   }
 };
+
+export const incrementLactationCycle = async (req, res) => {
+  const femaleBovineRepository = getRepository(FemaleBovine);
+  try {
+    const {
+      bovineIdentifier,
+      ranchIdentifier,
+    } = req.body;
+
+    const femaleBovine = await femaleBovineRepository
+      .whereEqualTo("ranchIdentifier", ranchIdentifier)
+      .whereEqualTo("id", bovineIdentifier).findOne();
+
+    if (!femaleBovine) {
+      return res.status(404).json({
+        code: "not found",
+        // eslint-disable-next-line max-len
+        message: "a bovine with this internal identifier was not found",
+      });
+    }
+
+    femaleBovine.lactationCycle++;
+    await femaleBovineRepository.update(femaleBovine);
+    return res.status(200).json({
+      message: `the lactation cycle was updated`,
+      bovineIdentifier: bovineIdentifier,
+    });
+  } catch (error) {
+    const constraintError = getConstrainsError(error[0]?.constraints);
+    const responseError = constraintError ? constraintError : getDefaultError();
+    return res.status(400).json(responseError);
+  }
+}
 
 function getLastCalving(date) {
   return {

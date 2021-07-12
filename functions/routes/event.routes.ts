@@ -4,9 +4,9 @@ const router = Router();
 import * as eventController from "../controllers/event.controller";
 
 // router.post("/", bullController.createBull);
-router.post("/heat", eventController.createHeatEvent);
-router.post("/calving", eventController.createCalvingEvent);
-router.post("/pregnant", eventController.createPregnantEvent);
+router.post("/heat", eventController.checkAnimalExist, eventController.createHeatEvent);
+router.post("/calving", eventController.checkAnimalExist, eventController.createCalvingEvent);
+router.post("/pregnant", eventController.checkAnimalExist, eventController.createPregnantEvent);
 router.get("/calving", eventController.getLastCalvingEvent);
 router.get("/heat/lactationCycle",
     eventController.getHeatEventsByLactationCycle);

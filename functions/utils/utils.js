@@ -11,10 +11,10 @@ export const getConstrainsError = (constraint) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const getDefaultError = () => {
+export const getDefaultError = (error) => {
   return {
     code: "Unexpected",
-    message: "Unexpected error",
+    message: error,
   };
 };
 

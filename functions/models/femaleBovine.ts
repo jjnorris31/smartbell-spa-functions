@@ -1,9 +1,10 @@
 import {isDefined, IsNotEmpty, Validate} from "class-validator";
-import {ISubCollection, SubCollection} from "fireorm";
+import {Collection, ISubCollection, SubCollection} from "fireorm";
 import HeatEvent from "./events/heatEvent";
 import CalvingEvent from "./events/calvingEvent";
 import PregnantEvent from "./events/pregnantEvent";
 
+@Collection()
 class FemaleBovine {
   id: string;
 
@@ -61,10 +62,5 @@ class FemaleBovine {
   internalIdentifier: string;
   ranchIdentifier: string;
 }
-
-// class Calving {
-//   calvingEventIdentifier: string;
-//   date: Date;
-// }
 
 export default FemaleBovine;

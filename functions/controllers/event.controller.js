@@ -1,4 +1,3 @@
-import Ranch from "../models/ranch";
 import HeatEvent from "../models/events/heatEvent";
 import {getRepository} from "fireorm";
 import {firestore} from "firebase-admin/lib/firestore";
@@ -6,37 +5,27 @@ import * as moment from "moment";
 import {getConstrainsError, getDefaultError} from "../utils/utils";
 import CalvingEvent from "../models/events/calvingEvent";
 import PregnantEvent from "../models/events/pregnantEvent";
+import FemaleBovine from "../models/femaleBovine";
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const createHeatEvent = async (req, res) => {
-  const ranchRepository = getRepository(Ranch);
+  const femaleBovineRepository = getRepository(FemaleBovine);
 
   try {
     const {
-      bovineIdentifier,
-      ranchIdentifier,
       date,
       description,
+      bovineIdentifier,
       type,
       bullIdentifier,
       lactationCycle,
     } = req.body;
 
-    const ranchRef = await ranchRepository.findById(ranchIdentifier);
-    const femaleBovineRef = await ranchRef.femaleBovines
+    const femaleBovineRef = await femaleBovineRepository
         .findById(bovineIdentifier);
 
-    if (!femaleBovineRef) {
-      return res.status(404).json({
-        code: "not found",
-        // eslint-disable-next-line max-len
-        message: "animal not found",
-      });
-    }
-
     const newHeatEvent = new HeatEvent();
-    newHeatEvent.date = firestore.Timestamp
-        .fromMillis(moment(date, "YYYY/MM/DD").valueOf());
+    newHeatEvent.date = getTimestampByDate(date);
     newHeatEvent.description = description;
     newHeatEvent.type = type;
     newHeatEvent.bovineIdentifier = bovineIdentifier;
@@ -49,19 +38,18 @@ export const createHeatEvent = async (req, res) => {
     });
   } catch (error) {
     const constraintError = getConstrainsError(error[0]?.constraints);
-    const responseError = constraintError ? constraintError : getDefaultError();
+    const responseError = constraintError ? constraintError : getDefaultError(error);
     return res.status(400).json(responseError);
   }
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const createCalvingEvent = async (req, res) => {
-  const ranchRepository = getRepository(Ranch);
+  const femaleBovineRepository = getRepository(FemaleBovine);
 
   try {
     const {
       bovineIdentifier,
-      ranchIdentifier,
       date,
       description,
       type,
@@ -70,8 +58,7 @@ export const createCalvingEvent = async (req, res) => {
       lactationCycle,
     } = req.body;
 
-    const ranchRef = await ranchRepository.findById(ranchIdentifier);
-    const femaleBovineRef = await ranchRef.femaleBovines
+    const femaleBovineRef = await femaleBovineRepository
         .findById(bovineIdentifier);
 
     if (!femaleBovineRef) {
@@ -83,14 +70,12 @@ export const createCalvingEvent = async (req, res) => {
     }
 
     const newCalvingEvent = new CalvingEvent();
-    newCalvingEvent.date = firestore.Timestamp
-        .fromMillis(moment(date, "YYYY/MM/DD").valueOf());
+    newCalvingEvent.date = getTimestampByDate(date);
     newCalvingEvent.description = description;
     newCalvingEvent.type = type;
     newCalvingEvent.abortReason = abortReason;
     newCalvingEvent.sickness = sickness;
     newCalvingEvent.lactationCycle = lactationCycle;
-    console.log({newCalvingEvent});
     await femaleBovineRef.calvingEvents.create(newCalvingEvent);
 
     return res.status(201).json({
@@ -98,21 +83,66 @@ export const createCalvingEvent = async (req, res) => {
     });
   } catch (error) {
     const constraintError = getConstrainsError(error[0]?.constraints);
-    const responseError = constraintError ? constraintError : getDefaultError();
+    const responseError = constraintError ? constraintError : getDefaultError(error);
+    return res.status(400).json(responseError);
+  }
+};
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const createPregnantEvent = async (req, res) => {
+  const femaleBovineRepository = getRepository(FemaleBovine);
+
+  try {
+    const {
+      bovineIdentifier,
+      date,
+      description,
+      type,
+      heatIdentifier,
+      lactationCycle,
+    } = req.body;
+
+    const femaleBovineRef = await femaleBovineRepository
+      .findById(bovineIdentifier);
+
+    if (heatIdentifier) {
+      const pregnantEvent = await femaleBovineRef.pregnantEvents
+        .whereEqualTo("heatIdentifier", heatIdentifier).findOne();
+      if (pregnantEvent) {
+        return res.status(400).json({
+          code: "duplicated heat",
+          message: "the heat provided was previously registered",
+        });
+      }
+    }
+
+    const newPregnantEvent = new PregnantEvent();
+    newPregnantEvent.date = getTimestampByDate(date);
+    newPregnantEvent.description = description;
+    newPregnantEvent.type = type;
+    newPregnantEvent.heatIdentifier = heatIdentifier;
+    newPregnantEvent.lactationCycle = lactationCycle;
+    newPregnantEvent.bovineIdentifier = bovineIdentifier;
+    await femaleBovineRef.pregnantEvents.create(newPregnantEvent);
+
+    return res.status(201).json({
+      message: "a pregnant event was created",
+    });
+  } catch (error) {
+    const constraintError = getConstrainsError(error[0]?.constraints);
+    const responseError = constraintError ? constraintError : getDefaultError(error);
     return res.status(400).json(responseError);
   }
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getLastCalvingEvent = async (req, res) => {
-  const ranchRepository = getRepository(Ranch);
-  const ranchIdentifier = req.query.ranch;
+  const femaleBovineRepository = getRepository(FemaleBovine);
   const bovineIdentifier = req.query.bovine;
   const lactationCycle = req.query.cycle;
 
   try {
-    const ranchRef = await ranchRepository.findById(ranchIdentifier);
-    const femaleBovineRef = await ranchRef.femaleBovines
+    const femaleBovineRef = await femaleBovineRepository
         .findById(bovineIdentifier);
     let lastCalvingEvent = null;
 
@@ -131,21 +161,19 @@ export const getLastCalvingEvent = async (req, res) => {
     return res.status(200).json(lastCalvingEvent);
   } catch (error) {
     const constraintError = getConstrainsError(error[0]?.constraints);
-    const responseError = constraintError ? constraintError : getDefaultError();
+    const responseError = constraintError ? constraintError : getDefaultError(error);
     return res.status(400).json(responseError);
   }
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getHeatEventsByLactationCycle = async (req, res) => {
-  const ranchRepository = getRepository(Ranch);
-  const ranchIdentifier = req.query.ranch;
+  const femaleBovineRepository = getRepository(FemaleBovine);
   const bovineIdentifier = req.query.bovine;
   const lactationCycle = req.query.cycle;
 
   try {
-    const ranchRef = await ranchRepository.findById(ranchIdentifier);
-    const femaleBovineRef = await ranchRef.femaleBovines
+    const femaleBovineRef = await femaleBovineRepository
         .findById(bovineIdentifier);
     let lastCalvingEvent = null;
 
@@ -171,21 +199,19 @@ export const getHeatEventsByLactationCycle = async (req, res) => {
     }
   } catch (error) {
     const constraintError = getConstrainsError(error[0]?.constraints);
-    const responseError = constraintError ? constraintError : getDefaultError();
+    const responseError = constraintError ? constraintError : getDefaultError(error);
     return res.status(400).json(responseError);
   }
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getPregnantEventsByLactationCycle = async (req, res) => {
-  const ranchRepository = getRepository(Ranch);
-  const ranchIdentifier = req.query.ranch;
+  const femaleBovineRepository = getRepository(FemaleBovine);
   const bovineIdentifier = req.query.bovine;
   const lactationCycle = req.query.cycle;
 
   try {
-    const ranchRef = await ranchRepository.findById(ranchIdentifier);
-    const femaleBovineRef = await ranchRef.femaleBovines
+    const femaleBovineRef = await femaleBovineRepository
         .findById(bovineIdentifier);
     let lastCalvingEvent = null;
 
@@ -211,66 +237,39 @@ export const getPregnantEventsByLactationCycle = async (req, res) => {
     }
   } catch (error) {
     const constraintError = getConstrainsError(error[0]?.constraints);
-    const responseError = constraintError ? constraintError : getDefaultError();
+    const responseError = constraintError ? constraintError : getDefaultError(error);
     return res.status(400).json(responseError);
   }
 };
 
-
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const createPregnantEvent = async (req, res) => {
-  const ranchRepository = getRepository(Ranch);
-
+export const checkAnimalExist = async (req, res, next) => {
+  const femaleBovineRepository = getRepository(FemaleBovine);
   try {
     const {
       bovineIdentifier,
       ranchIdentifier,
-      date,
-      description,
-      type,
-      heatIdentifier,
-      lactationCycle,
     } = req.body;
 
-    const ranchRef = await ranchRepository.findById(ranchIdentifier);
-    const femaleBovineRef = await ranchRef.femaleBovines
-        .findById(bovineIdentifier);
-
+    const femaleBovineRef = await femaleBovineRepository
+        .whereEqualTo("ranchIdentifier", ranchIdentifier)
+        .whereEqualTo("id", bovineIdentifier).findOne();
     if (!femaleBovineRef) {
       return res.status(404).json({
         code: "not found",
         message: "animal not found",
       });
+    } else {
+      next();
     }
-
-    if (heatIdentifier) {
-      const pregnantEvent = await femaleBovineRef.pregnantEvents
-          .whereEqualTo("heatIdentifier", heatIdentifier).findOne();
-      if (pregnantEvent) {
-        return res.status(400).json({
-          code: "duplicated heat",
-          message: "the heat provided was previously registered",
-        });
-      }
-    }
-
-    const newPregnantEvent = new PregnantEvent();
-    newPregnantEvent.date = firestore.Timestamp
-        .fromMillis(moment(date, "YYYY/MM/DD").valueOf());
-    newPregnantEvent.description = description;
-    newPregnantEvent.type = type;
-    newPregnantEvent.heatIdentifier = heatIdentifier;
-    newPregnantEvent.lactationCycle = lactationCycle;
-    newPregnantEvent.bovineIdentifier = bovineIdentifier;
-    newPregnantEvent.ranchIdentifier = ranchIdentifier;
-    await femaleBovineRef.pregnantEvents.create(newPregnantEvent);
-
-    return res.status(201).json({
-      message: "a pregnant event was created",
-    });
   } catch (error) {
     const constraintError = getConstrainsError(error[0]?.constraints);
-    const responseError = constraintError ? constraintError : getDefaultError();
+    const responseError = constraintError ? constraintError : getDefaultError(error);
     return res.status(400).json(responseError);
   }
 };
+
+function getTimestampByDate(date) {
+  return firestore.Timestamp
+      .fromMillis(moment(date, "YYYY/MM/DD").valueOf());
+}
