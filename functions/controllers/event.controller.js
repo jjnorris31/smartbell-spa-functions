@@ -82,6 +82,7 @@ export const createCalvingEvent = async (req, res) => {
       message: "a calving event was created",
     });
   } catch (error) {
+    console.log({error})
     const constraintError = getConstrainsError(error[0]?.constraints);
     const responseError = constraintError ? constraintError : getDefaultError(error);
     return res.status(400).json(responseError);
@@ -149,7 +150,7 @@ export const getLastCalvingEvent = async (req, res) => {
     if (lactationCycle !== 0) {
       lastCalvingEvent = await femaleBovineRef.calvingEvents
           .whereEqualTo("lactationCycle", lactationCycle)
-          .whereEqualTo("abortType", null).findOne();
+          .whereEqualTo("abortReason", null).findOne();
     } else {
       return res.status(417).json({
         code: "to low cycle",
@@ -160,6 +161,7 @@ export const getLastCalvingEvent = async (req, res) => {
 
     return res.status(200).json(lastCalvingEvent);
   } catch (error) {
+    console.log({error});
     const constraintError = getConstrainsError(error[0]?.constraints);
     const responseError = constraintError ? constraintError : getDefaultError(error);
     return res.status(400).json(responseError);
@@ -245,7 +247,7 @@ export const getCalvingEvents = async (req, res) => {
   try {
     const femaleBovineRef = await femaleBovineRepository
       .findById(bovineIdentifier);
-    const calvingEvents = await femaleBovineRef.pregnantEvents
+    const calvingEvents = await femaleBovineRef.calvingEvents
       .whereNotEqualTo("lactationCycle", femaleBovineRef.lactationCycle).find();
     return res.status(200).json(calvingEvents);
   } catch (error) {

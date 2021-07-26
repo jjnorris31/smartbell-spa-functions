@@ -62,12 +62,12 @@ Content-Type: application/json
 ###
 
 ###
-GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/event/pregnant/all?ranch=SvGk8ewbKYCK7lfywhMl&bovine=48A8so9iXvA3l4H9r0Mn
+GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/event/pregnant/all?ranch=SvGk8ewbKYCK7lfywhMl&bovine=C6FRjqMwPieKP8wEadqi
 Content-Type: application/json
 ###
 
 ###
-GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/event/calving/all?ranch=SvGk8ewbKYCK7lfywhMl&bovine=48A8so9iXvA3l4H9r0Mn
+GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/event/calving/all?ranch=SvGk8ewbKYCK7lfywhMl&bovine=C6FRjqMwPieKP8wEadqi
 Content-Type: application/json
 ###
 

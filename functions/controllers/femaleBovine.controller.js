@@ -65,7 +65,7 @@ export const createFemaleBovine = async (req, res) => {
     const response = await femaleBovineRepository.create(newFemaleBovine);
     return res.status(201).json({
       message: `a ${isHeifer ? "heifer" : "cow"} was created`,
-      internalIdentifier: response.id,
+      bovineIdentifier: response.id,
     });
   } catch (error) {
     const constraintError = getConstrainsError(error[0]?.constraints);
@@ -83,6 +83,7 @@ export const getAnimal = async (req, res) => {
   try {
     const femaleBovine = await femaleBovineRepository
         .whereEqualTo("ranchIdentifier", ranchIdentifier)
+        .whereEqualTo("deleteAt", null)
         .whereEqualTo("id", bovineIdentifier).findOne();
 
     if (femaleBovine) {
@@ -92,11 +93,51 @@ export const getAnimal = async (req, res) => {
     return res.status(404).json({
       code: "not found",
       // eslint-disable-next-line max-len
-      message: "a bovine with this internal identifier was not found",
+      message: "a bovine with this id was not found",
     });
   } catch (error) {
     const constraintError = getConstrainsError(error[0]?.constraints);
     const responseError = constraintError ? constraintError : getDefaultError();
+    return res.status(400).json(responseError);
+  }
+};
+
+export const updateFemaleBovine = async (req, res) => {
+  const femaleBovineRepository = getRepository(FemaleBovine);
+
+  const {
+    ranchIdentifier,
+    bovineIdentifier,
+    breed,
+    groupIdentifier,
+    internalIdentifier,
+    siniigaIdentifier,
+    height,
+    weight
+  } = req.body;
+
+  try {
+    const femaleBovine = await femaleBovineRepository.findById(bovineIdentifier);
+    if (femaleBovine) {
+      femaleBovine.breed = breed;
+      femaleBovine.groupIdentifier = groupIdentifier;
+      femaleBovine.internalIdentifier = internalIdentifier;
+      femaleBovine.siniigaIdentifier = siniigaIdentifier;
+      femaleBovine.height = height ? parseFloat(height) : null;
+      femaleBovine.weight = weight ? parseFloat(weight) : null;
+
+      await femaleBovineRepository.update(femaleBovine);
+      return res.status(200).send();
+    }
+
+    return res.status(404).json({
+      code: "not found",
+      // eslint-disable-next-line max-len
+      message: "a bovine with this id was not found",
+    });
+  } catch (error) {
+    const constraintError = getConstrainsError(error[0]?.constraints);
+    const responseError = constraintError ? constraintError : getDefaultError(error);
     return res.status(400).json(responseError);
   }
 };
@@ -150,5 +191,7 @@ function femaleBovineResponse(femaleBovine) {
     internalIdentifier: femaleBovine.internalIdentifier,
     id: femaleBovine.id,
     ranchIdentifier: femaleBovine.ranchIdentifier,
+    height: femaleBovine.height,
+    weight: femaleBovine.weight
   };
 }

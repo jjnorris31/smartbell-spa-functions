@@ -12,3 +12,17 @@ Content-Type: application/json
   "bovineIdentifier": "29yWekMbektd2x5R982y"
 }
 ###
+
+PUT http://127.0.0.1:5001/smartbell-pwa/us-central1/app/femaleBovine
+Content-Type: application/json
+
+{
+  "bovineIdentifier": "C6FRjqMwPieKP8wEadqi",
+  "breed": "Simmental",
+  "name": "DEFAULT",
+  "internalIdentifier": "Animalitu999",
+  "ranchIdentifier": "SvGk8ewbKYCK7lfywhMl",
+  "siniigaIdentifier": "3258966598"
+}
+###
+

@@ -7,6 +7,7 @@ import * as femaleBovineController
 router.post("/", femaleBovineController.createFemaleBovine);
 router.put("/lactationCycle", femaleBovineController.incrementLactationCycle);
 router.get("/", femaleBovineController.getAnimal);
+router.put("/", femaleBovineController.updateFemaleBovine);
 // router.get("/:id", userController.verifyToken, ranchController.getRanch);
 // router.put("/:id", userController.verifyToken, ranchController.updateRanch);
 // router.delete("/:id", userController.verifyToken,

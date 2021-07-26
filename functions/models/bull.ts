@@ -1,6 +1,8 @@
 import {isDefined, IsNotEmpty, Validate} from "class-validator";
 import {firestore} from "firebase-admin/lib/firestore";
+import {Collection} from "fireorm";
 
+@Collection()
 class Bull {
     id: string;
 
@@ -25,6 +27,7 @@ class Bull {
     deleteAt: firestore.Timestamp;
     internalIdentifier: string;
     siniigaIdentifier: string;
+    ranchIdentifier: string;
     name: string;
 }
 

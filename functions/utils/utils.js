@@ -14,7 +14,7 @@ export const getConstrainsError = (constraint) => {
 export const getDefaultError = (error) => {
   return {
     code: "Unexpected",
-    message: error,
+    message: error.toString(),
   };
 };
 

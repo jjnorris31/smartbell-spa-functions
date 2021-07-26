@@ -19,3 +19,19 @@ Content-Type: application/json
 {
   "ranchIdentifier": "SvGk8ewbKYCK7lfywhMl"
 }
+###
+
+PUT http://127.0.0.1:5001/smartbell-pwa/us-central1/app/bull
+Content-Type: application/json
+
+{
+  "bovineIdentifier": "Kum8Czf1kK91GSi6B2vI",
+  "breed": "Simmental",
+  "name": "Totitu10",
+  "internalIdentifier": "Sunt et enim placeas",
+  "ranchIdentifier": "SvGk8ewbKYCK7lfywhMl",
+  "siniigaIdentifier": "3258966598",
+  "birthday": "2020-01-01"
+}
+###
+
