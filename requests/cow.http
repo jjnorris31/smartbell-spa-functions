@@ -1,0 +1,40 @@
+### GET request with pagination and deleted filter
+
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/cows?page=1&limit=2&filter=DELETED&values=DEAD
+Content-Type: application/json
+
+### GET request with pagination and deleted filter
+
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/cows?page=1&limit=2&filter=DELETED&values=SOLD
+Content-Type: application/json
+
+### GET request with pagination and multiple deleted filter
+
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/cows?page=1&limit=2&filter=BREED&values=SOLD,DEAD
+Content-Type: application/json
+
+### GET request with page, limit, filter and values
+
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/cows?page=1&limit=2&filter=BREED&values=HOLSTEIN
+Content-Type: application/json
+
+### GET request with page, limit, filter, values and search
+
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/cows?page=1&limit=2&filter=BREED&values=HOLSTEIN&search=ani
+Content-Type: application/json
+
+### GET request with search
+
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/cows?search=ani
+Content-Type: application/json
+
+### GET request with pagination
+
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/cows?page=1&limit=2
+Content-Type: application/json
+
+### GET request
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/cows
+Content-Type: application/json
+
+###

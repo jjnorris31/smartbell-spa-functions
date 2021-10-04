@@ -1,0 +1,3 @@
+### GET request
+POST {{host}}/smartbell-pwa/us-central1/app/index
+Content-Type: application/json

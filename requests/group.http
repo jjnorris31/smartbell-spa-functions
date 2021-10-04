@@ -1,0 +1,59 @@
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=2&filter=BREED&values=HOLSTEIN
+Content-Type: application/json
+
+### GET request with page, limit, filter, values and search
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=7&filter=AGE&values=1,2,3,4,5
+Content-Type: application/json
+
+### GET request with page, limit, filter, values and search
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=8&filter=LACTATION&values=1,2,3,4,5
+Content-Type: application/json
+
+### GET request with page, limit, filter, values and search
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=8
+Content-Type: application/json
+
+### GET request with page, limit, filter, values and search
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=8&search=Animalti
+Content-Type: application/json
+
+### GET request with page, limit, filter, values and search
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups?type=COW
+Content-Type: application/json
+
+### GET request with page, limit, filter, values and search
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups?type=HEIFER
+Content-Type: application/json
+
+### GET request with page, limit, filter, values and search
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT
+Content-Type: application/json
+
+### GET request with page, limit, filter, values and search
+POST {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups
+Content-Type: application/json
+
+{
+  "description": "Awesome description",
+  "KPI": "HEALTH",
+  "name": "Cool heifer group",
+  "type": "HEIFER",
+  "animals": ["sbQtrer3d4Tq77bjaHLL"]
+}
+
+### DELETE request
+DELETE {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/qTno5XBpi1aXOYKNDRm7
+Content-Type: application/json
+
+###  POST default groups
+POST {{host}}/smartbell-pwa/us-central1/app/ranches/groups/default
+Content-Type: application/json
+
+###  PUT default groups
+PUT {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT
+Content-Type: application/json
+
+{
+  "description": "awesome new description"
+}
+

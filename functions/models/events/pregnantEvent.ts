@@ -19,7 +19,7 @@ class PregnantEvent {
     message: "lactation cycle is required",
   })
   @IsNotEmpty()
-  lactationCycle: string;
+  lactationCycle: number;
 
   @Validate(isDefined, {
     message: "type is required",

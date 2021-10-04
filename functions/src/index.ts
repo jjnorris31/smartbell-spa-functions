@@ -9,10 +9,15 @@ import * as fireorm from "fireorm";
 import * as morgan from "morgan";
 import * as cors from "cors";
 import userRoutes from "../routes/user.routes";
+import algoliaRoutes from "../routes/algolia.routes";
 import ranchRoutes from "../routes/ranch.routes";
-import bullRoutes from "../routes/bull.routes";
-import cowRoutes from "../routes/femaleBovine.routes";
+import bullRoutes from "../routes/bulls.routes";
+import femaleBovineRoutes from "../routes/femaleBovine.routes";
+import cowRoutes from "../routes/cows.routes";
 import eventRoutes from "../routes/event.routes";
+import heiferRoutes from "../routes/heifers.routes";
+import groupRoutes from "../routes/groups.routes";
+import "../utils/algolia";
 
 const app = express();
 app.use(express.json());
@@ -31,10 +36,12 @@ fireorm.initialize(db, {
 
 
 app.use("/user", userRoutes);
+app.use("/index", algoliaRoutes);
 app.use("/ranch", ranchRoutes);
-app.use("/bull", bullRoutes);
+app.use("/ranches", bullRoutes, cowRoutes, femaleBovineRoutes, heiferRoutes, groupRoutes);
 app.use("/femaleBovine", cowRoutes);
 app.use("/event", eventRoutes);
+app.use("/heifers", heiferRoutes);
 
 app.get("/hello", (req, res) => {
   return res.status(200).json({message: "Hello world"});

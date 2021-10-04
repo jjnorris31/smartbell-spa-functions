@@ -36,13 +36,19 @@ class FemaleBovine {
     message: "lactationCycle is required",
   })
   @IsNotEmpty()
-  lactationCycle: string;
+  lactationCycle: number;
 
   @Validate(isDefined, {
     message: "isHeifer is required",
   })
   @IsNotEmpty()
   isHeifer: boolean;
+
+  @Validate(isDefined, {
+    message: "isDead is required",
+  })
+  @IsNotEmpty()
+  isDead: boolean;
 
   @SubCollection(HeatEvent)
   heatEvents?: ISubCollection<HeatEvent>

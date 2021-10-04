@@ -1,27 +1,29 @@
-POST http://127.0.0.1:5001/smartbell-pwa/us-central1/app/bull
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/bulls?page=1&limit=2
+Content-Type: application/json
+
+###
+
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/bulls/Kum8Czf1kK91GSi6B2vI
+Content-Type: application/json
+
+###
+
+POST {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/bulls
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImFiMGNiMTk5Zjg3MGYyOGUyOTg5YWI0ODFjYzJlNDdlMGUyY2MxOWQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc21hcnRiZWxsLXB3YSIsImF1ZCI6InNtYXJ0YmVsbC1wd2EiLCJhdXRoX3RpbWUiOjE2MjI4NDU4MTksInVzZXJfaWQiOiJGUzV5UG95SWhqVm5ZYmhPNHpSNEJRaGl5Q28xIiwic3ViIjoiRlM1eVBveUloalZuWWJoTzR6UjRCUWhpeUNvMSIsImlhdCI6MTYyMjg0NTgxOSwiZXhwIjoxNjIyODQ5NDE5LCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBleGFtcGxlLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.TyMg_yeniI3Bjd05EgNfMWTfoeih67SWRTc8GPlKJnS7E9JpXI0TP1IlXIifwkeC_YynfWrXqOXpyWybcJO3ksZudAjVbSPNA0VKxtdkfbxvpIMqgmVyZsfgdZSAndn5swlQrCPGWD7Wym4-r3i2bTJhz0GoHsT73n1GTr9WnbYqhusldpfotcQ8AlHnf0yiHWtul4NR6RFeWDWiRxBsJsPMxVEkRJYuoS2W99LzT6DnyvwxLRrnCS9bdJ3FNJV8MgcqU0frhIe68ExwnefipttUo-sRVwcqN3qR6jdcYxCVlcd1DU4f_OnrKNd7UYN5QQ_gP_I50Hz0x0fDJDiyZg
 
 {
-  "name": "Mi sentimient",
+  "name": "Mi sentimientss",
   "breed": "Holstein",
-  "internalIdentifier": "Chop",
+  "internalIdentifier": "Chop1",
   "birthday": "2012/01/01",
-  "siniigaIdentifier": "Identificador",
+  "siniigaIdentifier": "Identificadors",
   "groupIdentifier": "DEFAULT",
   "ranchIdentifier": "9pVod6Mgcmmv6hV9iJtM"
 }
 ###
 
-GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/bull/all
-Content-Type: application/json
-
-{
-  "ranchIdentifier": "SvGk8ewbKYCK7lfywhMl"
-}
-###
-
-PUT http://127.0.0.1:5001/smartbell-pwa/us-central1/app/bull
+PUT {{host}}/smartbell-pwa/us-central1/app/ranches/9pVod6Mgcmmv6hV9iJtM/bulls/vsLQ7qWpx90L0VO15MsQ
 Content-Type: application/json
 
 {
@@ -30,8 +32,13 @@ Content-Type: application/json
   "name": "Totitu10",
   "internalIdentifier": "Sunt et enim placeas",
   "ranchIdentifier": "SvGk8ewbKYCK7lfywhMl",
-  "siniigaIdentifier": "3258966598",
+  "siniigaIdentifier": "32589665984",
   "birthday": "2020-01-01"
 }
+###
+
+DELETE {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/bulls/jzTz1QgwGlv03yFsPpzK
+Content-Type: application/json
+
 ###
 

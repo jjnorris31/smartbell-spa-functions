@@ -30,7 +30,7 @@ export const createHeatEvent = async (req, res) => {
     newHeatEvent.type = type;
     newHeatEvent.bovineIdentifier = bovineIdentifier;
     newHeatEvent.bullIdentifier = bullIdentifier;
-    newHeatEvent.lactationCycle = lactationCycle;
+    newHeatEvent.lactationCycle = parseInt(lactationCycle);
     await femaleBovineRef.heatEvents.create(newHeatEvent);
 
     return res.status(201).json({
@@ -75,7 +75,7 @@ export const createCalvingEvent = async (req, res) => {
     newCalvingEvent.type = type;
     newCalvingEvent.abortReason = abortReason;
     newCalvingEvent.sickness = sickness;
-    newCalvingEvent.lactationCycle = lactationCycle;
+    newCalvingEvent.lactationCycle = parseInt(lactationCycle);
     await femaleBovineRef.calvingEvents.create(newCalvingEvent);
 
     return res.status(201).json({
@@ -122,7 +122,7 @@ export const createPregnantEvent = async (req, res) => {
     newPregnantEvent.description = description;
     newPregnantEvent.type = type;
     newPregnantEvent.heatIdentifier = heatIdentifier;
-    newPregnantEvent.lactationCycle = lactationCycle;
+    newPregnantEvent.lactationCycle = parseInt(lactationCycle);
     newPregnantEvent.bovineIdentifier = bovineIdentifier;
     await femaleBovineRef.pregnantEvents.create(newPregnantEvent);
 
@@ -139,8 +139,9 @@ export const createPregnantEvent = async (req, res) => {
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getLastCalvingEvent = async (req, res) => {
   const femaleBovineRepository = getRepository(FemaleBovine);
+  console.log(req.query);
   const bovineIdentifier = req.query.bovine;
-  const lactationCycle = req.query.cycle;
+  const lactationCycle = parseInt(req.query.cycle);
 
   try {
     const femaleBovineRef = await femaleBovineRepository
@@ -172,7 +173,7 @@ export const getLastCalvingEvent = async (req, res) => {
 export const getHeatEventsByLactationCycle = async (req, res) => {
   const femaleBovineRepository = getRepository(FemaleBovine);
   const bovineIdentifier = req.query.bovine;
-  const lactationCycle = req.query.cycle;
+  const lactationCycle = parseInt(req.query.cycle);
 
   try {
     const femaleBovineRef = await femaleBovineRepository
@@ -261,7 +262,7 @@ export const getCalvingEvents = async (req, res) => {
 export const getPregnantEventsByLactationCycle = async (req, res) => {
   const femaleBovineRepository = getRepository(FemaleBovine);
   const bovineIdentifier = req.query.bovine;
-  const lactationCycle = req.query.cycle;
+  const lactationCycle = parseInt(req.query.cycle);
 
   try {
     const femaleBovineRef = await femaleBovineRepository

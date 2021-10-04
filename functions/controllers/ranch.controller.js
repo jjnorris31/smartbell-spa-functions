@@ -75,6 +75,7 @@ export const getRanch = async (req, res) => {
     const ranch = await ranchRepository.whereEqualTo("id", ranchId).findOne();
     return res.status(200).json(ranch);
   } catch (e) {
+    console.log(e);
     return res.status(400).json({message: e.message});
   }
 };

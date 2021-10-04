@@ -1,0 +1,77 @@
+POST {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/female-bovines
+Content-Type: application/json
+
+{
+  "birthday": "2012/01/01",
+  "breed": "HOLSTEIN",
+  "groupIdentifier": "DEFAULT",
+  "ranchIdentifier": "SvGk8ewbKYCK7lfywhMl",
+  "lactationCycle": 0,
+  "isHeifer": false,
+  "heatStatus": "NOT_YET",
+  "internalIdentifier": "Animaltiasssn",
+  "siniigaIdentifier": "1243524379"
+}
+###
+
+DELETE {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/female-bovines/MsRV1RyT7C0tnNR3tbcH?type=ERROR
+Accept: application/json
+
+###
+GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/femaleBovine?ranch=SvGk8ewbKYCK7lfywhMl&bovine=jzOa875KRxMtksex3ePh
+Accept: application/json
+
+###
+
+###
+GET {{host}}/smartbell-pwa/us-central1/app/femaleBovine/all?ranch=SvGk8ewbKYCK7lfywhMl&limit=3&page=1
+Accept: application/json
+
+###
+
+PUT http://127.0.0.1:5001/smartbell-pwa/us-central1/app/femaleBovine/lactationCycle
+Content-Type: application/json
+
+{
+  "ranchIdentifier": "9pVod6Mgcmmv6hV9iJtM",
+  "bovineIdentifier": "29yWekMbektd2x5R982y"
+}
+###
+
+PUT http://127.0.0.1:5001/smartbell-pwa/us-central1/app/femaleBovine
+Content-Type: application/json
+
+{
+  "bovineIdentifier": "C6FRjqMwPieKP8wEadqi",
+  "breed": "Simmental",
+  "name": "DEFAULT",
+  "internalIdentifier": "Animalitu999",
+  "ranchIdentifier": "SvGk8ewbKYCK7lfywhMl",
+  "siniigaIdentifier": "3258966598"
+}
+###
+
+PUT {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/female-bovines
+Content-Type: application/json
+
+{
+  "internalIdentifiers": [
+    "4qdt4TEo1RaBjNrllnnZ",
+    "sbQtrer3d4Tq77bjaHLL"
+  ],
+  "groupIdentifier": "DEFAULT"
+}
+
+###
+
+DELETE {{host}}/smartbell-pwa/us-central1/app/femaleBovine/hard?ranch=SvGk8ewbKYCK7lfywhMl&bovine=jzOa875KRxMtksex3ePh
+Accept: application/json
+###
+
+DELETE {{host}}/smartbell-pwa/us-central1/app/femaleBovine/soft?ranch=SvGk8ewbKYCK7lfywhMl&bovine=jqwSLYFyfZdfzQjfbtoy
+Accept: application/json
+
+###
+
+
+
