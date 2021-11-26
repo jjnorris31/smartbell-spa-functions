@@ -30,9 +30,9 @@ __decorate([
 ], User.prototype, "phone", void 0);
 __decorate([
     class_validator_1.Validate(class_validator_1.isDefined, {
-        message: "obBoarding is required",
+        message: "onBoarding is required",
     })
-], User.prototype, "obBoarding", void 0);
+], User.prototype, "onBoarding", void 0);
 __decorate([
     class_validator_1.ArrayNotEmpty()
 ], User.prototype, "roles", void 0);

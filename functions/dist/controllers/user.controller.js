@@ -16,12 +16,13 @@ exports.createUser = async (req, res) => {
         newUser.alerts = [
             { type: "SMS", active: true },
             { type: "EMAIL", active: true },
-            { type: "PUSH", active: true },
+            { type: "PUSH", active: false },
         ];
         newUser.onBoarding = onBoarding;
         newUser.firstSurname = firstSurname;
         newUser.email = email;
         newUser.phone = phone;
+        newUser.pushNotificationToken = null;
         newUser.roles = roles;
         newUser.authUniqueIdentifier = authUniqueIdentifier;
         await admin.auth().setCustomUserClaims(uid, { role: "admin" });
@@ -54,7 +55,7 @@ exports.getUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
     const repository = fireorm_1.getRepository(user_1.default);
     console.log({ req });
-    const { email, phone, firstName, firstSurname, alerts, onBoarding, } = req.body;
+    const { email, phone, firstName, firstSurname, alerts, pushNotificationToken, onBoarding, } = req.body;
     const authorizationHeader = req.headers.authorization;
     const token = authorizationHeader && authorizationHeader.split(" ")[1];
     try {
@@ -63,6 +64,7 @@ exports.updateUser = async (req, res) => {
         const user = await repository
             .whereEqualTo("authUniqueIdentifier", uid).findOne();
         user.email = email;
+        user.pushNotificationToken = pushNotificationToken;
         user.phone = phone;
         user.firstName = firstName;
         user.firstSurname = firstSurname;

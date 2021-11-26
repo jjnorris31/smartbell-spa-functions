@@ -25,9 +25,9 @@ class User {
     })
     phone: string;
     @Validate(isDefined, {
-      message: "obBoarding is required",
+      message: "onBoarding is required",
     })
-    obBoarding: boolean;
+    onBoarding: boolean;
     @ArrayNotEmpty()
     roles: Array<string>
     @Validate(isDefined, {
@@ -36,6 +36,8 @@ class User {
     @ArrayNotEmpty()
     alerts: Array<Alert>
     authUniqueIdentifier: string;
+
+    pushNotificationToken: string;
 }
 
 export interface Alert {
