@@ -6,20 +6,19 @@ import * as femaleBovineController
 
 router.get("/:ranchId/female-bovines/:id", femaleBovineController.getAnimal);
 
+router.get("/:ranchId/female-bovines", femaleBovineController.getAnimals);
+
+
 router.post("/:ranchId/female-bovines",
-  femaleBovineController.checkUniqueInternalId,
-  femaleBovineController.checkUniqueSiniigaId,
-  femaleBovineController.createFemaleBovine);
+    femaleBovineController.createFemaleBovine);
 
 router.delete("/:ranchId/female-bovines/:id",
-  femaleBovineController.deleteFemaleAnimal);
+    femaleBovineController.deleteFemaleAnimal);
 
 router.put("/:ranchId/female-bovines/:id",
-  femaleBovineController.checkUniqueInternalId,
-  femaleBovineController.checkUniqueSiniigaId,
-  femaleBovineController.updateFemaleBovine);
+    femaleBovineController.updateFemaleBovine);
 
-router.put('/:ranchId/female-bovines', femaleBovineController.updateFemaleBovines);
+router.put("/:ranchId/female-bovines", femaleBovineController.updateFemaleBovines);
 
 
 router.put("/lactationCycle", femaleBovineController.incrementLactationCycle);

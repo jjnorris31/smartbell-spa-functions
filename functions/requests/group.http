@@ -1,20 +1,20 @@
-GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=2&filter=BREED&values=HOLSTEIN
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=2&filter=BREED&values=HOLSTEIN&type=COW
 Content-Type: application/json
 
 ### GET request with page, limit, filter, values and search
-GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=7&filter=AGE&values=1,2,3,4,5
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=7&filter=AGE&values=1,2,3,4,5&type=COW
 Content-Type: application/json
 
 ### GET request with page, limit, filter, values and search
-GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=8&filter=LACTATION&values=1,2,3,4,5
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=8&filter=LACTATION&values=1,2,3,4,5&type=COW
 Content-Type: application/json
 
 ### GET request with page, limit, filter, values and search
-GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=8
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=8&type=COW
 Content-Type: application/json
 
 ### GET request with page, limit, filter, values and search
-GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=8&search=Animalti
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT?page=1&limit=8&search=Animalti&type=COW
 Content-Type: application/json
 
 ### GET request with page, limit, filter, values and search
@@ -26,7 +26,7 @@ GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups?t
 Content-Type: application/json
 
 ### GET request with page, limit, filter, values and search
-GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/DEFAULT
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/groups/x5G2NGBkBVJ13bP3X50W?type=HEIFER
 Content-Type: application/json
 
 ### GET request with page, limit, filter, values and search
@@ -46,7 +46,7 @@ DELETE {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/group
 Content-Type: application/json
 
 ###  POST default groups
-POST {{host}}/smartbell-pwa/us-central1/app/ranches/groups/default
+POST {{host}}/ranches/groups/default
 Content-Type: application/json
 
 ###  PUT default groups

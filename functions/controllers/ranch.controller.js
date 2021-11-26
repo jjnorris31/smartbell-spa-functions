@@ -51,7 +51,7 @@ export const getRanches = async (req, res) => {
     };
     const ranches = await ranchRepository
         .whereEqualTo("userIdentifier", uid).find();
-    response.ranches = ranches.slice(limit * (page - 1), limit * (page));
+    response.ranches = limit && page ? ranches.slice(limit * (page - 1), limit * (page)) : ranches;
     response.count = ranches.length;
     return res.status(200).json(response);
   } catch (e) {

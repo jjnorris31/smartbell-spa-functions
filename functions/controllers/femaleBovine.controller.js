@@ -1,48 +1,78 @@
-import Ranch from "../models/ranch";
 import {getRepository, runTransaction} from "fireorm";
-import {getConstrainsError, getDefaultError, getTimestampByDate, getFemaleBovines} from "../utils/utils";
-import FemaleBovine from "../models/femaleBovine";
-import {firestore} from "firebase-admin/lib/firestore";
-import * as moment from "moment";
-import index from "../utils/algolia.js"
-import Group from "../models/group";
 
+import {
+  getConstrainsError,
+  getDefaultError,
+  getTimestampByDate,
+  getLastPregnantEvents,
+  getCowsResponse, getLastHeatEvents,
+} from "../utils/utils";
+import FemaleBovine from "../models/femaleBovine";
+import * as moment from "moment";
+import index from "../utils/algolia.js";
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const createFemaleBovine = async (req, res) => {
   const repository = getRepository(FemaleBovine);
+  const {ranchId} = req.params;
+  const {internalIdentifier, siniigaIdentifier} = req.body;
   const femaleBovine = getFemaleBovineDocument(req.body);
   try {
+    await checkUniqueInternalIdentifier(ranchId, internalIdentifier);
+    await checkUniqueSiniigaIdentifier(siniigaIdentifier);
     const femaleBovineCreated = await repository.create(femaleBovine);
     index.saveObject({
       internalIdentifier: femaleBovineCreated.internalIdentifier,
       siniigaIdentifier: femaleBovineCreated.siniigaIdentifier,
-      ranchIdentifier: femaleBovineCreated.ranchIdentifier
+      ranchIdentifier: femaleBovineCreated.ranchIdentifier,
     }, {autoGenerateObjectIDIfNotExist: true});
     return res.status(201).json(femaleBovineCreated);
-  } catch (_) {
-    return res.status(200).json(
-      {
-        code: "creating error",
-        message: `an error has occurred while creating the female bovine`,
-      }
-    );
+  } catch (error) {
+    res.status(400).send({
+      error: error.message,
+    });
   }
 };
 
 export const getAnimals = async (req, res) => {
+  const {limit, page, filter, values, search} = req.query;
+  const {ranchId} = req.params;
+
   try {
-    const response = await getFemaleBovines('COWS', req);
-    console.log({response});
-    return res.status(200).json(response);
-  } catch (error) {
-    const constraintError = getConstrainsError(error[0]?.constraints);
-    const responseError = constraintError ? constraintError : getDefaultError(error);
-    return res.status(400).json(responseError);
+    let foundFemaleAnimals = [];
+    let slicedFemaleAnimals = [];
+    foundFemaleAnimals = await getAllFemaleAnimals(ranchId, []);
+
+    switch (filter) {
+      case "PREGNANT":
+        const femaleWithLastPregnantEvents = await getLastPregnantEvents(foundFemaleAnimals);
+        foundFemaleAnimals = femaleWithLastPregnantEvents.filter((cow) => cow.lastPregnantDate);
+        break;
+      case "HEAT":
+        const femaleWithHeatEvents = await getLastHeatEvents(foundFemaleAnimals);
+        foundFemaleAnimals = femaleWithHeatEvents.filter((cow) => cow.lastHeatDate);
+        break;
+    }
+
+    slicedFemaleAnimals = limit && page ?
+      foundFemaleAnimals.slice(limit * (page - 1), limit * (page)) : foundFemaleAnimals;
+    return res.status(200).json(getCowsResponse(slicedFemaleAnimals, foundFemaleAnimals.length));
+  } catch (e) {
+    return res.status(400).json(e);
   }
+};
+
+export const getAllFemaleAnimals = async (ranchId) => {
+  const repository = getRepository(FemaleBovine);
+  const query = repository.whereEqualTo("ranchIdentifier", ranchId)
+      .whereEqualTo("deleteAt", null)
+      .whereEqualTo("isDead", false);
+  return await query.find();
 };
 
 export const getAnimal = async (req, res) => {
   const femaleBovineRepository = getRepository(FemaleBovine);
-  const { ranchId, id } = req.params;
+  const {ranchId, id} = req.params;
   try {
     const femaleBovine = await femaleBovineRepository
         .whereEqualTo("ranchIdentifier", ranchId)
@@ -60,7 +90,7 @@ export const getAnimal = async (req, res) => {
 
 export const updateFemaleBovines = async (req, res) => {
   const repository = getRepository(FemaleBovine);
-  const { ranchId } = req.params;
+  const {ranchId} = req.params;
 
   const {
     internalIdentifiers,
@@ -68,15 +98,15 @@ export const updateFemaleBovines = async (req, res) => {
   } = req.body;
 
   try {
-    await runTransaction(async tran => {
+    await runTransaction(async (tran) => {
       const femaleBovineTransactionRepository = tran.getRepository(FemaleBovine);
-      let femaleBovinesToUpdate = [];
+      const femaleBovinesToUpdate = [];
 
       for (const id of internalIdentifiers) {
         // todo change to promise all
-        let femaleBovine = await femaleBovineTransactionRepository
-          .whereEqualTo("id", id)
-          .whereEqualTo("ranchIdentifier", ranchId).findOne();
+        const femaleBovine = await femaleBovineTransactionRepository
+            .whereEqualTo("id", id)
+            .whereEqualTo("ranchIdentifier", ranchId).findOne();
         femaleBovinesToUpdate.push(femaleBovine);
       }
 
@@ -89,24 +119,33 @@ export const updateFemaleBovines = async (req, res) => {
   } catch (e) {
     return res.status(209).json(e);
   }
-
-}
+};
 
 export const updateFemaleBovine = async (req, res) => {
   const femaleBovineRepository = getRepository(FemaleBovine);
+  const {ranchId, id} = req.params;
 
   const {
-    ranchIdentifier,
     bovineIdentifier,
     breed,
     groupIdentifier,
     internalIdentifier,
     siniigaIdentifier,
     height,
-    weight
+    weight,
   } = req.body;
   try {
-    const femaleBovine = await femaleBovineRepository.findById(bovineIdentifier);
+    await checkUpdateUniqueInternalIdentifier(
+        ranchId,
+        id,
+        internalIdentifier
+    );
+    await checkUpdateUniqueSiniigaIdentifier(
+        id,
+        siniigaIdentifier
+    );
+    const femaleBovine = await femaleBovineRepository
+        .findById(id);
     if (femaleBovine) {
       femaleBovine.breed = breed;
       femaleBovine.groupIdentifier = groupIdentifier;
@@ -115,12 +154,17 @@ export const updateFemaleBovine = async (req, res) => {
       femaleBovine.height = height ? parseFloat(height) : null;
       femaleBovine.weight = weight ? parseFloat(weight) : null;
       await femaleBovineRepository.update(femaleBovine);
-      return res.status(200).send();
+      res.status(200).send();
     } else {
-      return res.status(209).json();
+      res.status(400).send({
+        error: "not found animal",
+      });
     }
   } catch (error) {
-    return res.status(209).json(error);
+    console.log({error});
+    res.status(400).send({
+      error: error.message,
+    });
   }
 };
 
@@ -133,8 +177,8 @@ export const incrementLactationCycle = async (req, res) => {
     } = req.body;
 
     const femaleBovine = await femaleBovineRepository
-      .whereEqualTo("ranchIdentifier", ranchIdentifier)
-      .whereEqualTo("id", bovineIdentifier).findOne();
+        .whereEqualTo("ranchIdentifier", ranchIdentifier)
+        .whereEqualTo("id", bovineIdentifier).findOne();
 
     if (!femaleBovine) {
       return res.status(404).json({
@@ -147,7 +191,7 @@ export const incrementLactationCycle = async (req, res) => {
     femaleBovine.lactationCycle++;
     await femaleBovineRepository.update(femaleBovine);
     return res.status(200).json({
-      message: `the lactation cycle was updated`,
+      message: "the lactation cycle was updated",
       bovineIdentifier: bovineIdentifier,
     });
   } catch (error) {
@@ -155,27 +199,27 @@ export const incrementLactationCycle = async (req, res) => {
     const responseError = constraintError ? constraintError : getDefaultError();
     return res.status(400).json(responseError);
   }
-}
+};
 
 export const deleteFemaleAnimal = async (req, res) => {
   const repository = getRepository(FemaleBovine);
-  const { ranchId, id } = req.params;
-  const { type } = req.query;
+  const {ranchId, id} = req.params;
+  const {type} = req.query;
   try {
-    let femaleBovine = await repository
-      .whereEqualTo("ranchIdentifier", ranchId)
-      .whereEqualTo("id", id).findOne();
+    const femaleBovine = await repository
+        .whereEqualTo("ranchIdentifier", ranchId)
+        .whereEqualTo("id", id).findOne();
     switch (type) {
-      case 'DEAD':
+      case "DEAD":
         femaleBovine.isDead = true;
         await repository.update(femaleBovine);
         break;
-      case 'SALE':
-      case 'CATTLE':
-        femaleBovine.deleteAt = getTimestampByDate(moment().format('YYYY-MM-DD'));
+      case "SALE":
+      case "CATTLE":
+        femaleBovine.deleteAt = getTimestampByDate(moment().format("YYYY-MM-DD"));
         await repository.update(femaleBovine);
         break;
-      case 'ERROR':
+      case "ERROR":
         await repository.delete(id);
         break;
       default:
@@ -185,13 +229,63 @@ export const deleteFemaleAnimal = async (req, res) => {
   } catch (e) {
     return res.status(404).send();
   }
-}
+};
 
 function getLastCalving(date) {
   return {
     calvingEventIdentifier: false,
     date: date,
   };
+}
+
+async function checkUniqueInternalIdentifier(ranchId, internalIdentifier) {
+  const repository = getRepository(FemaleBovine);
+  const foundFemaleBovine = await repository
+      .whereEqualTo("internalIdentifier", internalIdentifier)
+      .whereEqualTo("ranchIdentifier", ranchId).findOne();
+  if (internalIdentifier && foundFemaleBovine) {
+    throw new Error("duplicated internal identifier");
+  }
+}
+
+async function checkUniqueSiniigaIdentifier(siniigaIdentifier) {
+  const repository = getRepository(FemaleBovine);
+  const foundFemaleBovine = await repository
+      .whereEqualTo("siniigaIdentifier", siniigaIdentifier)
+      .findOne();
+
+  if (siniigaIdentifier && foundFemaleBovine) {
+    throw new Error("duplicated siniiga identifier");
+  }
+}
+
+async function checkUpdateUniqueInternalIdentifier(ranchId, id, internalIdentifier) {
+  const repository = getRepository(FemaleBovine);
+  const foundFemaleBovine = await repository
+      .whereEqualTo("internalIdentifier", internalIdentifier)
+      .whereEqualTo("ranchIdentifier", ranchId).findOne();
+  console.log("checkUpdateUniqueInternalIdentifier");
+  console.log({ranchId});
+  console.log({foundFemaleBovine});
+  console.log({internalIdentifier});
+  console.log({id});
+  if (internalIdentifier && foundFemaleBovine && foundFemaleBovine.id !== id) {
+    throw new Error("duplicated internal identifier");
+  }
+}
+
+async function checkUpdateUniqueSiniigaIdentifier(id, siniigaIdentifier) {
+  const repository = getRepository(FemaleBovine);
+  const foundFemaleBovine = await repository
+      .whereEqualTo("siniigaIdentifier", siniigaIdentifier)
+      .findOne();
+  console.log("checkUpdateUniqueSiniigaIdentifier");
+  console.log({foundFemaleBovine});
+  console.log({siniigaIdentifier});
+  console.log({id});
+  if (siniigaIdentifier && foundFemaleBovine && foundFemaleBovine.id !== id) {
+    throw new Error("duplicated siniiga identifier");
+  }
 }
 
 function femaleBovineResponse(femaleBovine) {
@@ -204,106 +298,14 @@ function femaleBovineResponse(femaleBovine) {
     id: femaleBovine.id,
     ranchIdentifier: femaleBovine.ranchIdentifier,
     height: femaleBovine.height,
-    weight: femaleBovine.weight
+    weight: femaleBovine.weight,
   };
-}
-
-/**
- * Checks if a given internal id was previously registered in a given ranch
- * @param req
- * @param res
- * @param next
- * @returns {Promise<*>}
- */
-export const checkUniqueInternalId = async (req, res, next) => {
-  const repository = getRepository(FemaleBovine);
-  const { ranchId, id } = req.params;
-  const { internalIdentifier } = req.body;
-  try {
-    const foundFemaleBovine = await repository
-      .whereEqualTo("internalIdentifier", internalIdentifier)
-      .whereEqualTo("ranchIdentifier", ranchId).findOne();
-
-    if (foundFemaleBovine) {
-      if (id) {
-        // updating female bovine
-        if (id === foundFemaleBovine.id) {
-          next();
-        } else {
-          return res.status(209).json({
-            code: "internal id duplicated",
-            message: `a female bovine with this internal identifier was saved previously in this ranch`,
-          });
-        }
-      } else {
-        // new female bovine
-        return res.status(409).json({
-          code: "internal id duplicated",
-          message: `a female bovine with this internal identifier was saved previously in this ranch`,
-        });
-      }
-    } else {
-      next();
-    }
-  } catch (e) {
-    return res.status(200).json(
-      {
-        code: "checking error",
-        message: `an error has occurred while checking the internal identifier`,
-      }
-    );
-  }
-}
-
-/**
- * Checks if a given internal id was previously registered in the database
- * @param req
- * @param res
- * @param next
- * @returns {Promise<*>}
- */
-export const checkUniqueSiniigaId = async (req, res, next) => {
-  const repository = getRepository(FemaleBovine);
-  const { ranchId, id } = req.params;
-  const { siniigaIdentifier } = req.body;
-  try {
-    const foundBull = await repository
-      .whereEqualTo("siniigaIdentifier", siniigaIdentifier).findOne();
-    if (foundBull) {
-      if (id) {
-        // updating female bovine
-        if (id === foundBull.id) {
-          next();
-        } else {
-          return res.status(209).json({
-            code: "siniiga id duplicated",
-            message: `a female bovine with this siniiga identifier was saved previously in the database`,
-          });
-        }
-      } else {
-        // new female bovine
-        return res.status(409).json({
-          code: "siniiga id duplicated",
-          message: `a female bovine with this siniiga identifier was saved previously in the database`,
-        });
-      }
-    } else {
-      next();
-    }
-  } catch (_) {
-    return res.status(200).json(
-      {
-        code: "checking error",
-        message: `an error has occurred while checking the siniiga identifier`,
-      }
-    );
-  }
 }
 
 /**
  * Gets an female bovine collection from a request body
  * @param body a request body
- * @returns {FemaleBovine}
+ * @return {FemaleBovine}
  */
 function getFemaleBovineDocument(body) {
   const femaleBovine = new FemaleBovine();
@@ -321,7 +323,7 @@ function getFemaleBovineDocument(body) {
   femaleBovine.weight = null;
   femaleBovine.isDead = false;
   femaleBovine.internalIdentifier = body.internalIdentifier;
-  femaleBovine.siniigaIdentifier = body.siniigaIdentifier;
+  femaleBovine.siniigaIdentifier = body.siniigaIdentifier === "" ? null : body.siniigaIdentifier;
   return femaleBovine;
 }
 
@@ -330,15 +332,15 @@ function getFemaleBovineDocument(body) {
  * @param req
  * @param res
  * @param next
- * @returns {Promise<*>}
+ * @return {Promise<*>}
  */
 export const checkBelongsRanch = async (req, res, next) => {
   const repository = getRepository(FemaleBovine);
-  const { ranchId } = req.params;
+  const {ranchId} = req.params;
   try {
     const femaleBovine = await repository
-      .whereEqualTo("ranchIdentifier", ranchId)
-      .findOne();
+        .whereEqualTo("ranchIdentifier", ranchId)
+        .findOne();
     if (!femaleBovine) {
       return res.status(404).send();
     }
@@ -346,4 +348,4 @@ export const checkBelongsRanch = async (req, res, next) => {
   } catch (_) {
     return res.status(404).send();
   }
-}
+};

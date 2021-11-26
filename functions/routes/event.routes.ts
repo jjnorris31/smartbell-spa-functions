@@ -17,4 +17,6 @@ router.get("/heat/all", eventController.checkAnimalExist, eventController.getHea
 router.get("/pregnant/all", eventController.checkAnimalExist, eventController.getPregnantEvents);
 router.get("/calving/all", eventController.checkAnimalExist, eventController.getCalvingEvents);
 
+router.post("/heat/update", eventController.updateHeatStatus);
+
 export default router;

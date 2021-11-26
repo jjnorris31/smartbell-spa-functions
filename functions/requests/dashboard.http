@@ -1,0 +1,6 @@
+### GET request with pagination and heat filter
+
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/dashboard
+Content-Type: application/json
+
+###

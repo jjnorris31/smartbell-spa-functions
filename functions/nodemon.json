@@ -1,0 +1,9 @@
+{
+  "watch": ["src"],
+  "ext": "ts",
+  "exec": "npm run build && npm run start",
+  "env": {
+    "GOOGLE_APPLICATION_CREDENTIALS": "./smartbell-backend-firebase-adminsdk-s1fyk-a71cd88725.json",
+    "PORT": "3000"
+  }
+}

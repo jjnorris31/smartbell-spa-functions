@@ -31,5 +31,4 @@ class CalvingEvent {
   sickness: string;
 }
 
-
 export default CalvingEvent;

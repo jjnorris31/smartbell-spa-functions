@@ -2,17 +2,17 @@ import * as groupController from "../controllers/group.controller";
 import router from "./cows.routes";
 
 router.get("/:ranchId/groups/:id",
-  groupController.getGroup);
+    groupController.getGroup);
 
 router.get("/:ranchId/groups",
-  groupController.getGroups);
+    groupController.getGroups);
 
 router.delete("/:ranchId/groups/:id",
-  groupController.deleteGroup);
+    groupController.deleteGroup);
 
 router.post("/:ranchId/groups",
-  groupController.checkUniqueGroupName,
-  groupController.createGroup);
+    groupController.checkUniqueGroupName,
+    groupController.createGroup);
 
 router.post("/groups/default", groupController.createDefaultGroup);
 

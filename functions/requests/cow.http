@@ -1,6 +1,16 @@
 ### GET request with pagination and deleted filter
 
-GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/cows?page=1&limit=2&filter=DELETED&values=DEAD
+GET {{host}}/ranches/SvGk8ewbKYCK7lfywhMl/cows?page=1&limit=2&filter=DELETED&values=DEAD
+Content-Type: application/json
+
+### GET request with pagination and pregnant filter
+
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/cows?page=1&limit=2&filter=PREGNANT
+Content-Type: application/json
+
+### GET request with pagination and heat filter
+
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/cows?page=1&limit=2&filter=HEAT
 Content-Type: application/json
 
 ### GET request with pagination and deleted filter

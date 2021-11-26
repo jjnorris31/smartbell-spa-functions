@@ -33,7 +33,14 @@ class User {
     @Validate(isDefined, {
       message: "authUniqueIdentifier is required",
     })
+    @ArrayNotEmpty()
+    alerts: Array<Alert>
     authUniqueIdentifier: string;
+}
+
+export interface Alert {
+  type: string,
+  active: boolean
 }
 
 export default User;

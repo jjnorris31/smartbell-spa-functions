@@ -71,4 +71,10 @@ GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/event/calving/all?ranch=
 Content-Type: application/json
 ###
 
+###  GET default groups
+POST {{host}}/event/heat/update
+Content-Type: application/json
+##
+
+
 

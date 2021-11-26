@@ -18,6 +18,7 @@ DELETE {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/femal
 Accept: application/json
 
 ###
+
 GET http://127.0.0.1:5001/smartbell-pwa/us-central1/app/femaleBovine?ranch=SvGk8ewbKYCK7lfywhMl&bovine=jzOa875KRxMtksex3ePh
 Accept: application/json
 
@@ -61,6 +62,11 @@ Content-Type: application/json
   ],
   "groupIdentifier": "DEFAULT"
 }
+
+### GET request with pagination and heat filter
+
+GET {{host}}/smartbell-pwa/us-central1/app/ranches/SvGk8ewbKYCK7lfywhMl/female-bovines?page=1&limit=2&filter=HEAT
+Content-Type: application/json
 
 ###
 

@@ -27,12 +27,6 @@ class FemaleBovine {
   groupIdentifier: string;
 
   @Validate(isDefined, {
-    message: "siniigaIdentifier is required",
-  })
-  @IsNotEmpty()
-  siniigaIdentifier: string;
-
-  @Validate(isDefined, {
     message: "lactationCycle is required",
   })
   @IsNotEmpty()
@@ -60,6 +54,7 @@ class FemaleBovine {
   pregnantEvents?: ISubCollection<PregnantEvent>
 
   maleParent: string;
+  siniigaIdentifier: string;
   femaleParent: string;
   heatStatus: string;
   deleteAt: Date;

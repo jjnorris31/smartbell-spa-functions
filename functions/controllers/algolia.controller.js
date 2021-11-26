@@ -1,5 +1,4 @@
-// @ts-ignore
-import index from "../utils/algolia.js"
+import index from "../utils/algolia.js";
 import {getRepository} from "fireorm";
 import FemaleBovine from "../models/femaleBovine";
 import Bull from "../models/bull";
@@ -10,31 +9,31 @@ export const indexData = async (req, res) => {
 
   try {
     const femaleResponse = await femaleRepository
-      .whereEqualTo('deleteAt', null)
-      .whereEqualTo("isDead", false)
-      .find();
+        .whereEqualTo("deleteAt", null)
+        .whereEqualTo("isDead", false)
+        .find();
 
     const maleResponse = await maleRepository
-      .whereEqualTo('deleteAt', null)
-      .find();
+        .whereEqualTo("deleteAt", null)
+        .find();
 
-    let femaleRecords = femaleResponse.map((animal) => {
+    const femaleRecords = femaleResponse.map((animal) => {
       return {
         internalIdentifier: animal.internalIdentifier,
         siniigaIdentifier: animal.siniigaIdentifier,
         ranchIdentifier: animal.ranchIdentifier,
         groupIdentifier: animal.groupIdentifier,
-        animalType: animal.lactationCycle === 0 ? 'HEIFER' : 'COW'
-      }
+        animalType: animal.lactationCycle === 0 ? "HEIFER" : "COW",
+      };
     });
 
-    let maleRecords = maleResponse.map((animal) => {
+    const maleRecords = maleResponse.map((animal) => {
       return {
         internalIdentifier: animal.internalIdentifier,
         siniigaIdentifier: animal.siniigaIdentifier,
         ranchIdentifier: animal.ranchIdentifier,
-        animalType: 'BULL'
-      }
+        animalType: "BULL",
+      };
     });
 
     const records = femaleRecords.concat(maleRecords);
@@ -46,4 +45,4 @@ export const indexData = async (req, res) => {
     console.log(e);
     return res.status(204).json();
   }
-}
+};

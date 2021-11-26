@@ -5,6 +5,7 @@ import * as userController from "../controllers/user.controller";
 
 router.post("/", userController.verifyToken, userController.createUser);
 router.get("/", userController.verifyToken, userController.getUser);
+router.put("/", userController.verifyToken, userController.updateUser);
 router.post("/claims", userController.verifyToken, userController.setClaims);
 
 export default router;

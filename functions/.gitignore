@@ -7,3 +7,5 @@ typings/
 
 # Node.js dependency directory
 node_modules/
+!/smartbell-backend-firebase-adminsdk-s1fyk-a71cd88725.json
+!/.env
